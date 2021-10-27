@@ -45,7 +45,7 @@ python2 dvrk_path_replay.py -a <YOUR-PSM-ID> -c <CSV-FILE-NAME> # run the script
 ```
 
 Step 6:
-Prepare ``rosbag `` record command.
+Prepare ``rosbag`` record command.
 
 ```
 cd <PATH-TO-YOUR-CATKIN-WS>       # go to your catkin_ws
