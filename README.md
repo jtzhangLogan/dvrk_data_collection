@@ -1,23 +1,28 @@
+
 dVRK System Identification 
 ===  
   
 What is in the folder
 ===  
 - ``dvrk_excitation_signal_*.csv``: CSV file that contains excitation path, specified as joint positions. 
-- ``dvrk_path_replay.py``: python script that plays the excitation path on the designated PSM.
+- ``dvrk_path_replay.py``: python script that plays the excitation path on the designated PSM and invokes the data collection process.
 
 How to use:  
 ===
 Step 1: 
+
 Place ``dvrk_path_replay.py`` inside your ``catkin_ws``. It can be in any folder. 
 
 Step 2:
+
 Place the ``dvrk_excitation_signal_*.csv`` files in the same folder where you placed ``dvrk_path_replay.py``. Technically, these csv files could be in another folder, but then you would need to specify the complete path to these files when you run the script.
 
 Step 3:
+
 Place the instrument **LARGE-NEEDLE-DRIVER** on the robot. If you don't have this instrument, you can use whatever instrument you have, but please leave a note about what instrument you used to collect data.
 
 Step 4:
+
 Run ``roscore`` and ``dvrk_robot``.
 
 ```
@@ -29,50 +34,46 @@ roscore
 # in another terminal, run the dvrk application
 cd <PATH-TO-YOUR-CATKIN-WS>  # go to your catkin_ws
 source devel/setup.bash      # set environment variables
-rosrun dvrk_robot dvrk_console_json -j <PATH-TO-YOUR-CONSOLE-CONFIG.JSON> -p 0.001 # run the dvrk console
+rosrun dvrk_robot dvrk_console_json -j <PATH-TO-YOUR-CONSOLE-CONFIG.JSON> -p 0.001 # run the dvrk console, it is IMPORTANT to set ROS rate to 1kHz, i.e., don't forget to add -p 0.001
 ```
-If you have an MTM, after you run the console, please enable teleoperation.
 
 Step 5:
-Prepare Robot for data collection.
-**NOTE: When you are prompted to replay trajectory, stop there and go to step 6.**
+
+Start playing excitation path and record data.
 
 ```
 cd <PATH-TO-YOUR-CATKIN-WS>       # go to your catkin_ws
 source devel/setup.bash           # set environment variables 
 cd <PATH-TO-DVRK-PATH-REPLAY.PY>  # go to folder that contains dvrk_path_replay.py
-python2 dvrk_path_replay.py -a <YOUR-PSM-ID> -c <CSV-FILE-NAME> # run the script, follow the prompt until you are about to replay trajectory
+
+# example usage: 
+# 1. assuming you are using PSM1 with SUJ, your current SUJ configuration is #1, and you want to play excitation path dvrk_excitation_path_1.csv
+#    python2 dvrk_data_collect.py -a PSM1 -f dvrk_excitation_path_1.csv -s PSM-SUJ -c 1
+#
+# 2. assuming you are using PSM2 only, your current dVRK configuration is #2, and you want to play excitation path dvrk_excitation_path_3.csv
+#    python2 dvrk_data_collect.py -a PSM2 -f dvrk_excitation_path_3.csv -s PSM -c 2
+#
+
+python2 dvrk_data_collect.py -a <PSM-ID> -f <CSV-FILE-NAME> -s <DVRK-SETUP> -c <CONFIGURATION-ID>
 ```
 
 Step 6:
-Prepare ``rosbag`` record command.
 
-```
-cd <PATH-TO-YOUR-CATKIN-WS>       # go to your catkin_ws
-source devel/setup.bash           # set environment variables 
-mkdir data                        # create a folder to store collected data
-cd data
-
-# Depending on your dvrk setup, please type one of the following three commands, but do not run yet
-# If your setup includes: SUJ, MTM, and PSM, type the following in your terminal. <MTM-ID> is the MTM that controls the PSM with <YOUR-PSM-ID>. e.g., if you are using MTMR to control PSM1, then <MTM-ID> == MTMR, <YOUR-PSM-ID> == PSM1
-rosbag record -O <CVS-FILE-NAME-W/O-EXT>.bag /<YOUR-PSM-ID>/measured_cp /<YOUR-PSM-ID>/measured_js /<YOUR-PSM-ID>/jaw/measured_js /<YOUR-PSM-ID>/spatial/jacobian /SUJ/<YOUR-PSM-ID>/measured_cp /SUJ/<YOUR-PSM-ID>/measured_js /<MTM-ID>/measured_cp /<MTM-ID>/measured_js /<MTM-ID>/spatial/jacobian
-
-# If your setup includes: MTM, and PSM, type this in your terminal
-rosbag record -O <CVS-FILE-NAME-W/O-EXT>.bag /<YOUR-PSM-ID>/measured_cp /<YOUR-PSM-ID>/measured_js /<YOUR-PSM-ID>/jaw/measured_js /<YOUR-PSM-ID>/spatial/jacobian /<MTM-ID>/measured_cp /<MTM-ID>/measured_js /<MTM-ID>/spatial/jacobian
-
-# If your setup includes: PSM, type this in your terminal
-rosbag record -O <CVS-FILE-NAME-W/O-EXT>.bag /<YOUR-PSM-ID>/measured_cp /<YOUR-PSM-ID>/measured_js /<YOUR-PSM-ID>/jaw/measured_js /<YOUR-PSM-ID>/spatial/jacobian
-```
+Repeat **STEP 5** for all CSV files. 
 
 Step 7:
-Once you have the ``rosbag record`` command ready, you are ready to collect data. Press ``Enter``  in the terminal for Step 6 to start bagging data. Immediately after you start the ``rosbag`` process, press ``Enter`` in the terminal for Step 5 to play the excitation path. After the path has been played, stop the ``rosbag`` process with ``Ctrl C``.
 
-Step 8:
-Repeat **STEP 5** to **STEP7** for all CSV files. 
+If you have a full da Vinci setup, or if it is easy for you to change the orientation of the PSM, please make 1-2 new configurations and repeat **STEP 6** again.
 
-**Congratulations!** You have reached the end of the data collection! Please zip your collect data and send it to us. 
+P.S.: Every time you change the robot body frame with respect to the world frame, you changed the configuration. In that case you need to specify a new ID for -c.
+
+The end:  
+===
+**Congratulations!** You have reached the end of the data collection! Please zip your data folder ``data`` under your ``catkin_ws`` and send it to us. 
 
 If you encounter any trouble during data collection, don't hesitate to contact me via email: ``jzhan247@jhu.edu``. I am also available for a zoom session to help you. 
 
 **Your effort and time are much appreciated! Thank you for your contributions!**
+
+
 
