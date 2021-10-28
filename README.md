@@ -47,11 +47,11 @@ source devel/setup.bash           # set environment variables
 cd <PATH-TO-DVRK-PATH-REPLAY.PY>  # go to folder that contains dvrk_path_replay.py
 
 # example usage: 
-# 1. assuming you are using PSM1 with SUJ, your current SUJ configuration is #1, and you want to play excitation path dvrk_excitation_path_1.csv
-#    python2 dvrk_data_collect.py -a PSM1 -f dvrk_excitation_path_1.csv -s PSM-SUJ -c 1
+# 1. assuming you are using PSM1 with SUJ, your current SUJ configuration is #1, and you want to play excitation path dvrk_excitation_signal_1.csv
+#    python2 dvrk_data_collect.py -a PSM1 -f dvrk_excitation_signal_1.csv -s PSM-SUJ -c 1
 #
-# 2. assuming you are using PSM2 only, your current dVRK configuration is #2, and you want to play excitation path dvrk_excitation_path_3.csv
-#    python2 dvrk_data_collect.py -a PSM2 -f dvrk_excitation_path_3.csv -s PSM -c 2
+# 2. assuming you are using PSM2 only, your current dVRK configuration is #2, and you want to play excitation path dvrk_excitation_signal_3.csv
+#    python2 dvrk_data_collect.py -a PSM2 -f dvrk_excitation_signal_3.csv -s PSM -c 2
 #
 
 python2 dvrk_data_collect.py -a <PSM-ID> -f <CSV-FILE-NAME> -s <DVRK-SETUP> -c <CONFIGURATION-ID>
