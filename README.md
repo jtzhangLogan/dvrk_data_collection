@@ -7,7 +7,7 @@ What is in the folder
 - ``dvrk_excitation_signal_*.csv``: CSV file that contains excitation path, specified as joint positions. 
 - ``dvrk_path_replay.py``: python script that plays the excitation path on the designated PSM and invokes the data collection process.
 
-How to use:  
+How to use
 ===
 Step 1: 
 
@@ -67,7 +67,7 @@ If you have a full da Vinci setup, or if it is easy for you to change the orient
 
 P.S.: Every time you change the robot body frame with respect to the world frame, you changed the configuration. In that case you need to specify a new ID for -c.
 
-The end:  
+The end
 ===
 **Congratulations!** You have reached the end of the data collection! Please zip your data folder ``data`` under your ``catkin_ws`` and send it to us. 
 
