@@ -4,7 +4,7 @@ dVRK System Identification
   
 What is in the folder
 ===  
-- ``dvrk_excitation_signal_*.csv``: CSV file that contains excitation path, specified as joint positions. 
+- ``signals/dvrk_excitation_signal_*.csv``: CSV file that contains excitation path, specified as joint positions. 
 - ``dvrk_path_replay.py``: python script that plays the excitation path on the designated PSM and invokes the data collection process.
 
 How to use
