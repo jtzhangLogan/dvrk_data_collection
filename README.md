@@ -5,17 +5,17 @@ dVRK System Identification
 What is in the folder
 ===  
 - ``signals/dvrk_excitation_signal_*.csv``: CSV file that contains excitation path, specified as joint positions. 
-- ``dvrk_path_replay.py``: python script that plays the excitation path on the designated PSM and invokes the data collection process.
+- ``dvrk_data_collect.py``: python script that plays the excitation path on the designated PSM and invokes the data collection process.
 
 How to use
 ===
 Step 1: 
 
-Place ``dvrk_path_replay.py`` inside your ``catkin_ws``. It can be in any folder. 
+Place ``dvrk_data_collect.py`` inside your ``catkin_ws``. It can be in any folder. 
 
 Step 2:
 
-Place the ``dvrk_excitation_signal_*.csv`` files in the same folder where you placed ``dvrk_path_replay.py``. Technically, these csv files could be in another folder, but then you would need to specify the complete path to these files when you run the script.
+Place the ``dvrk_excitation_signal_*.csv`` files in the same folder where you placed ``dvrk_data_collect.py``. Technically, these csv files could be in another folder, but then you would need to specify the complete path to these files when you run the script.
 
 Step 3:
 
@@ -44,13 +44,13 @@ Start playing excitation path and record data.
 ```
 cd <PATH-TO-YOUR-CATKIN-WS>       # go to your catkin_ws
 source devel/setup.bash           # set environment variables 
-cd <PATH-TO-DVRK-PATH-REPLAY.PY>  # go to folder that contains dvrk_path_replay.py
+cd <PATH-TO-DVRK-DATA-COLLECT.PY>  # go to folder that contains dvrk_data_collect.py
 
 # example usage: 
-# 1. assuming you are using PSM1 with SUJ, your current SUJ configuration is #1, and you want to play excitation path dvrk_excitation_signal_1.csv
+# 1. If you are using PSM1 with SUJ, your current SUJ configuration is #1, and you want to play excitation path dvrk_excitation_signal_1.csv
 #    python2 dvrk_data_collect.py -a PSM1 -f dvrk_excitation_signal_1.csv -s PSM-SUJ -c 1
 #
-# 2. assuming you are using PSM2 only, your current dVRK configuration is #2, and you want to play excitation path dvrk_excitation_signal_3.csv
+# 2. If you are using PSM2 only, your current dVRK configuration is #2, and you want to play excitation path dvrk_excitation_signal_3.csv
 #    python2 dvrk_data_collect.py -a PSM2 -f dvrk_excitation_signal_3.csv -s PSM -c 2
 #
 
