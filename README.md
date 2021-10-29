@@ -42,30 +42,24 @@ Step 5:
 Start playing excitation path and record data.
 
 ```
-cd <PATH-TO-YOUR-CATKIN-WS>       # go to your catkin_ws
-source devel/setup.bash           # set environment variables 
+cd <PATH-TO-YOUR-CATKIN-WS>        # go to your catkin_ws
+source devel/setup.bash            # set environment variables 
 cd <PATH-TO-DVRK-DATA-COLLECT.PY>  # go to folder that contains dvrk_data_collect.py
 
 # example usage: 
-# 1. If you are using PSM1 with SUJ, your current SUJ configuration is #1, and you want to play excitation path dvrk_excitation_signal_1.csv
-#    python2 dvrk_data_collect.py -a PSM1 -f dvrk_excitation_signal_1.csv -s PSM-SUJ -c 1
+# 1. If you are using PSM1 with SUJ and you want to play excitation path dvrk_excitation_signal_1.csv
+#    python2 dvrk_data_collect.py -a PSM1 -f dvrk_excitation_signal_1.csv -s PSM-SUJ
 #
-# 2. If you are using PSM2 only, your current dVRK configuration is #2, and you want to play excitation path dvrk_excitation_signal_3.csv
-#    python2 dvrk_data_collect.py -a PSM2 -f dvrk_excitation_signal_3.csv -s PSM -c 2
+# 2. If you are using PSM2 only and you want to play excitation path dvrk_excitation_signal_3.csv
+#    python2 dvrk_data_collect.py -a PSM2 -f dvrk_excitation_signal_3.csv -s PSM
 #
 
-python2 dvrk_data_collect.py -a <PSM-ID> -f <CSV-FILE-NAME> -s <DVRK-SETUP> -c <CONFIGURATION-ID>
+python2 dvrk_data_collect.py -a <PSM-ID> -f <CSV-FILE-NAME> -s <DVRK-SETUP>
 ```
 
 Step 6:
 
 Repeat **STEP 5** for all CSV files. 
-
-Step 7:
-
-If you have a full da Vinci setup, or if it is easy for you to change the orientation of the PSM, please make 1-2 new configurations and repeat **STEP 6** again.
-
-P.S.: Every time you change the robot body frame with respect to the world frame, you changed the configuration. In that case you need to specify a new ID for -c.
 
 The end
 ===
