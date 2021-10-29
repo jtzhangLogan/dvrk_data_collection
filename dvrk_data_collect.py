@@ -72,7 +72,7 @@ parser.add_argument('-f', '--csv', type=argparse.FileType('r'), required=True,
 parser.add_argument('-s', '--setup', type=str, required=True,
                     choices=['PSM', 'PSM-SUJ'],
                     help='description of your dvrk setup, necessary for collect shell script selection.')
-parser.add_argument('-c', '--config', type=str, required=True,
+parser.add_argument('-c', '--config', type=str, required=False, default='1',
                     help='index of your current configuration, if you changed SUJ position, please use another index. e.g., \"-c 1\" for configuration 1 and \"-c 2\" for for configuration 1')
 
 
