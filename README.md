@@ -63,7 +63,7 @@ Repeat **STEP 5** for all CSV files.
 
 The end
 ===
-**Congratulations!** You have reached the end of the data collection! Please zip your data folder ``data`` under your ``catkin_ws`` and send it to us. 
+**Congratulations!** You have reached the end of the data collection! Please zip your data folder ``data`` under your ``catkin_ws`` and send it to us. Please also note the version of dVRK software (e.g., Version 2.1.0) and firmware (e.g., Version 7) on your system. If you do not know the firmware version, you can type ``qladisp`` and it will report the firmware versions of all connected boards.
 
 If you encounter any trouble during data collection, don't hesitate to contact me via email: ``jzhan247@jhu.edu``. I am also available for a zoom session to help you. 
 
