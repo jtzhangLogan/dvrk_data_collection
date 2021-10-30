@@ -29,6 +29,7 @@ Run ``roscore`` in one terminal:
 cd <PATH-TO-YOUR-CATKIN-WS>  # go to your catkin_ws
 source devel/setup.bash      # set environment variables
 roscore
+```
 
 Step 4:
 
