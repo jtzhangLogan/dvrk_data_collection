@@ -138,7 +138,7 @@ input('---> Make sure the arm is ready to move using joint positions\n     You n
 
 # close gripper
 input('---> Press \"Enter\" to close the instrument\'s jaws')
-jaw_jp = np.array([-10.0 * np.pi / 180.0])
+jaw_jp = np.array([-20.0 * np.pi / 180.0])
 arm.jaw.move_jp(jaw_jp).wait()
 
 # go to initial position and wait
