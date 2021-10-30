@@ -2,26 +2,24 @@
 dVRK System Identification
 ===
 
-What is in the folder
-===
+# What is in the folder
 - ``signals/dvrk_excitation_signal_*.csv``: CSV file that contains excitation path, specified as joint positions.
 - ``dvrk_data_collect.py``: python script that plays the excitation path on the designated PSM and invokes the data collection process.
 
-How to use
-===
+# How to use
 
-Step 1:
+## Step 1
 
 Get the code, anywhere you want on your computer:
 ```sh
 git clone https://github.com/jtzhangLogan/dvrk_data_collection.git
 ```
 
-Step 2:
+## Step 2
 
 Place the instrument **LARGE-NEEDLE-DRIVER** on the robot. If you don't have this instrument, you can use whatever instrument you have, but please leave a note about what instrument you used to collect data.
 
-Step 3:
+## Step 3
 
 Run ``roscore`` in one terminal:
 ```sh
@@ -31,7 +29,7 @@ source devel/setup.bash      # set environment variables
 roscore
 ```
 
-Step 4:
+## Step 4
 
 Run ``dvrk_robot`` in a second terminal:
 ```sh
@@ -41,7 +39,9 @@ source devel/setup.bash      # set environment variables
 rosrun dvrk_robot dvrk_console_json -j <PATH-TO-YOUR-CONSOLE-CONFIG.JSON> -p 0.001 # run the dvrk console, it is IMPORTANT to set ROS rate to 1kHz, i.e., don't forget to add -p 0.001
 ```
 
-Step 5:
+⚠️ it is very important to start the `dvrk_console_json` with the option `-p 0.001`.  By default the dVRK console publishes its state at 100Hz but we need 1kHz rate.
+
+## Step 5
 
 Start playing excitation path and record data.
 
@@ -74,11 +74,11 @@ topics:      /PSM1/jaw/measured_js    89364 msgs    : sensor_msgs/JointState
 ```
 If you have way less messages recorded, double check that you started the `dvrk_console_json` node with the option `-p 0.001` in **Step 4**.
 
-Step 6:
+## Step 6
 
 Repeat **Step 5** for all CSV files (7 of them)
 
-Step 7:
+## Step 7
 
 Archive and check the size of the collected data:
 ```sh
@@ -89,8 +89,8 @@ ls -lh collected-data.tgz
 
 If the size of the compress file is way under 250M, double check that you started the `dvrk_console_json` node with the option `-p 0.001` in **Step 4**
 
-The end
-===
+# The end
+
 **Congratulations!** You have reached the end of the data collection! Please compress your data folder ``data`` and send it to us. Please also note the version of dVRK software (e.g., Version 2.1.0) and firmware (e.g., Version 7) on your system. If you do not know the firmware version, you can type ``qladisp`` and it will report the firmware versions of all connected boards.
 
 If you encounter any trouble during data collection, don't hesitate to contact me via email: ``jzhan247@jhu.edu``. I am also available for a zoom session to help you.
