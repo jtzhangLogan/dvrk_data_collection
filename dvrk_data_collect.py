@@ -1,3 +1,5 @@
+#!/usr/bin/env python2
+
 # derived from dvrk_bag_replay
 
 import crtk
@@ -16,9 +18,10 @@ import argparse
 import subprocess
 
 
-# simplified arm class to replay motion
+# simplified arm class to replay motion, better performance than
+# dvrk.psm since we're only subscribing to topics we need
 class arm_custom:
-    
+
     # simplified jaw class to close gripper
     class __Jaw:
         def __init__(self, ros_namespace, expected_interval, operating_state_instance):
@@ -34,7 +37,6 @@ class arm_custom:
         self.crtk_utils.add_operating_state()
         self.crtk_utils.add_servo_jp()
 	self.crtk_utils.add_move_jp()
-
         self.jaw = self.__Jaw(device_namespace + '/jaw', expected_interval, operating_state_instance = self)
 
 
@@ -87,20 +89,22 @@ if not os.path.exists(os.path.join(os.getcwd(), 'data')):
 
 # create configuration sub_folder
 folder_name = os.path.join(os.getcwd(), 'data')
-sub_folder_name = os.path.join(os.getcwd(), os.path.join('data', args.config))
+sub_folder_name = os.path.join(os.getcwd(), os.path.join('data', (args.config)))
 if not os.path.exists(sub_folder_name):
     os.mkdir(sub_folder_name)
 
 # determine script based on setup
 PSM_id = args.arm.strip('PSM')
 if args.setup == 'PSM':
-    command = "rosbag record -O {0}_{1}.bag /{1}/measured_cp /{1}/measured_js /{1}/jaw/measured_js /{1}/spatial/jacobian".format(os.path.join(sub_folder_name, args.csv.name.split('.csv')[0]), 'PSM'+str(PSM_id))
+    command = "rosbag record -O {0}_{1}.bag /{1}/tool_type /{1}/measured_cp /{1}/measured_js /{1}/jaw/measured_js /{1}/spatial/jacobian".format(os.path.join(sub_folder_name,
+                                                                                                                                                             os.path.basename(args.csv.name).split('.csv')[0]),
+                                                                                                                                                'PSM'+str(PSM_id))
     # sanity check command
-    sanity_cmd = "rosbag info {0}_{1}.bag".format(os.path.join(sub_folder_name, args.csv.name.split('.csv')[0]), 'PSM'+str(PSM_id))
+    sanity_cmd = "rosbag info {0}_{1}.bag".format(os.path.join(sub_folder_name, os.path.basename(args.csv.name).split('.csv')[0]), 'PSM'+str(PSM_id))
 elif args.setup == 'PSM-SUJ':
-    command = "rosbag record -O {0}_{1}_SUJ.bag /{1}/measured_cp /{1}/measured_js /{1}/jaw/measured_js /{1}/spatial/jacobian /SUJ/{1}/measured_cp /SUJ/{1}/measured_js".format(os.path.join(sub_folder_name, args.csv.name.split('.csv')[0]), 'PSM'+str(PSM_id))
+    command = "rosbag record -O {0}_{1}_SUJ.bag /{1}/measured_cp /{1}/measured_js /{1}/jaw/measured_js /{1}/spatial/jacobian /SUJ/{1}/measured_cp /SUJ/{1}/measured_js".format(os.path.join(sub_folder_name, os.path.basename(args.csv.name).split('.csv')[0]), 'PSM'+str(PSM_id))
     # sanity check command
-    sanity_cmd = "rosbag info {0}_{1}_SUJ.bag".format(os.path.join(sub_folder_name, args.csv.name.split('.csv')[0]), 'PSM'+str(PSM_id))
+    sanity_cmd = "rosbag info {0}_{1}_SUJ.bag".format(os.path.join(sub_folder_name, os.path.basename(args.csv.name).split('.csv')[0]), 'PSM'+str(PSM_id))
 else:
     sys.exit('-- Unsupported setup')
 
@@ -116,7 +120,7 @@ with open(args.csv.name) as csvfile:
 # ---------------------------------------------
 # prepare psm
 # ---------------------------------------------
-print('-- This script will replay a trajectory defined in %s on arm %s' % (args.arm, args.csv.name))
+print('-- This script will replay a trajectory defined in %s on arm %s' % (args.csv.name, args.arm))
 
 # create arm
 arm = arm_custom(device_namespace=args.arm, expected_interval=0.001)
@@ -130,10 +134,10 @@ print('-- Homing arm')
 if not arm.home(10):
     sys.exit('-- Failed to home within 10 seconds')
 
-input('---> Make sure the arm is ready to move using cartesian positions.  For a PSM or ECM, you need to have a tool in place and the tool tip needs to be outside the cannula.  You might have to manually adjust your arm.  Press "\Enter" when the arm is ready.')
+input('---> Make sure the arm is ready to move using joint positions\n     You need to have a tool/instrument in place and properly engaged\n     Press "Enter" when the arm is ready')
 
 # close gripper
-input('---> Press \"Enter\" to move to close gripper')
+input('---> Press \"Enter\" to close the instrument\'s jaws')
 jaw_jp = np.array([-10.0 * np.pi / 180.0])
 arm.jaw.move_jp(jaw_jp).wait()
 
@@ -146,7 +150,7 @@ arm.move_jp(jp).wait()
 # start playing trajectory and data collection
 # ---------------------------------------------
 # play trajectory
-input('---> Press \"Enter\" to play trajectory and collect data')
+input('---> Press \"Enter\" to replay the recorded trajectory and collect data')
 
 # run shell script
 rosbag_process = subprocess.Popen(command.split(' '))
@@ -170,7 +174,7 @@ for pose in poses:
     if delta_t > 0:
         time.sleep(delta_t)
 
-# stop bagging 
+# stop bagging
 terminate_process_and_children(rosbag_process)
 
 print('\n--> Time to replay trajectory: %f seconds' % (time.time() - start_time))
