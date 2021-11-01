@@ -50,6 +50,8 @@ def terminate_process_and_children(p):
     for pid_str in ps_output.split("\n")[:-1]:
             os.kill(int(pid_str), signal.SIGINT)
     p.terminate()
+    #wait for rosbag to clean up
+    rospy.sleep(1)
 
 if sys.version_info.major < 3:
     input = raw_input
@@ -179,6 +181,5 @@ terminate_process_and_children(rosbag_process)
 
 print('\n--> Time to replay trajectory: %f seconds' % (time.time() - start_time))
 print('--> Done!')
-
 # check if required topics are collected correctly
 os.system(sanity_cmd)
