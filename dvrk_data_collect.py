@@ -47,7 +47,7 @@ def terminate_process_and_children(p):
     ps_output = ps_command.stdout.read()
     retcode = ps_command.wait()
     assert retcode == 0, "ps command returned %d" % retcode
-    for pid_str in ps_output.split("\n")[:-1]:
+    for pid_str in ps_output.split(b'\n')[:-1]:
             os.kill(int(pid_str), signal.SIGINT)
     p.terminate()
 
