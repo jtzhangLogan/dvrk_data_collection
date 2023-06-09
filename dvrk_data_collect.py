@@ -36,7 +36,7 @@ class arm_custom:
         self.crtk_utils = crtk.utils(self, device_namespace, expected_interval)
         self.crtk_utils.add_operating_state()
         self.crtk_utils.add_servo_jp()
-	self.crtk_utils.add_move_jp()
+        self.crtk_utils.add_move_jp()
         self.jaw = self.__Jaw(device_namespace + '/jaw', expected_interval, operating_state_instance = self)
 
 
